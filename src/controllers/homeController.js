@@ -2,7 +2,7 @@ import db from "../models/index";
 
 let getHomePage = async (request, response) => {
     try {
-        let data = await db.User.findAll();
+        let data = await db.Users.findAll();
         return response.render('homepage.ejs', {
             data: JSON.stringify(data)
         });

@@ -10,7 +10,7 @@ let connectDB = async() => { // sử dụng async để thông báo đây là h�
     
     try {
         await sequelize.authenticate();
-        console.log('Kết nối thành công!');
+        console.log('Kết nối cơ sở dữ liệu thành công!');
     } catch (error) {
         console.error('Không thể kết nối với cơ sở dữ liệu:', error);
     }
