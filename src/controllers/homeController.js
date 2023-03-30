@@ -45,12 +45,25 @@ let editCRUD = async (request, response) => {
     }
 };
 
-let putCRUD= async (request, response) => {
+let putCRUD = async (request, response) => {
     let data = request.body;
-    let allUsers= await CRUDServices.updateUserData(data);
+    let allUsers = await CRUDServices.updateUserData(data);
     return response.render('displayCRUD.ejs', {
         data: allUsers
     })
+};
+
+let deleteCRUD = async (request, response) => {
+    let id = request.query.id;
+
+    if (id) {
+        let allUsers = await CRUDServices.deleteUserById(id);
+        return response.render('displayCRUD.ejs', {
+            data: allUsers
+        })
+    } else {
+        return response.send("Không tìm thấy dữ liệu phù hợp");
+    }
 };
 
 module.exports = {
@@ -60,5 +73,6 @@ module.exports = {
     postCRUD: postCRUD,
     displayGetCRUD: displayGetCRUD,
     editCRUD: editCRUD,
-    putCRUD: putCRUD
+    putCRUD: putCRUD,
+    deleteCRUD: deleteCRUD
 }
