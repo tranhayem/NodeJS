@@ -19,5 +19,5 @@ let port = process.env.PORT || 2728;
 // post=== undefined=> port= 2728
 
 application.listen(port, () => {
-    console.log("Backend Nodejs đang chạy trên port: " + port);
+    console.log("Backend Nodejs đang chạy trên port: http://localhost:" + port);
 })
