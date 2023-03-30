@@ -15,6 +15,26 @@
         border: 1px solid black;
         border-collapse: collapse;
     }
+
+    .btn-edit {
+        outline: none;
+        border: none;
+        background: orange;
+        height: 25px;
+        width: 60px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn-delete {
+        outline: none;
+        border: none;
+        background: red;
+        height: 25px;
+        width: 60px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
 </style>
 
 <body>
@@ -28,6 +48,7 @@
             <th>Gender</th>
             <th>RoleId</th>
             <th>PositionId</th>
+            <th>Actions</th>
         </tr>
         <% for(let i=0; i<data.length; i++) { %>
             <tr>
@@ -54,6 +75,10 @@
                 </td>
                 <td>
                     <%= data[i].positionId %>
+                </td>
+                <td>
+                    <a href="/edit-crud?id=<%= data[i].id%>" class="btn-edit" type="button">Edit</a>
+                    <a class="btn-delete" type="button">Delete</a>
                 </td>
             </tr>
             <%} %>
