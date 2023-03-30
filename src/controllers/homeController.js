@@ -16,19 +16,27 @@ let getAboutPage = async (request, response) => {
     return response.render('test/about.ejs');
 }
 
-let getCRUD= async(request, response) => {
+let getCRUD = async (request, response) => {
     return response.render('crud.ejs');
 }
 
-let postCRUD= async(request, response) => {
-    let message= await CRUDServices.createNewUser(request.body);
+let postCRUD = async (request, response) => {
+    let message = await CRUDServices.createNewUser(request.body);
     console.log(message);
     return response.send("post thành công");
+}
+
+let displayGetCRUD = async (request, response) => {
+    let data= await CRUDServices.getAllUser();
+    return response.render('displayCRUD.ejs', {
+        data: data
+    });
 }
 
 module.exports = {
     getHomePage: getHomePage,
     getAboutPage: getAboutPage,
     getCRUD: getCRUD,
-    postCRUD: postCRUD
+    postCRUD: postCRUD,
+    displayGetCRUD: displayGetCRUD
 }
