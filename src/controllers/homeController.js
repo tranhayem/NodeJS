@@ -58,9 +58,10 @@ let deleteCRUD = async (request, response) => {
 
     if (id) {
         let allUsers = await CRUDServices.deleteUserById(id);
-        return response.render('displayCRUD.ejs', {
-            data: allUsers
-        })
+        return response.send("Xóa dữ liệu thành công!");
+        // return response.render('displayCRUD.ejs', {
+        //     data: allUsers
+        // })
     } else {
         return response.send("Không tìm thấy dữ liệu phù hợp");
     }
