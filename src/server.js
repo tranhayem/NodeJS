@@ -15,8 +15,8 @@ initWebRouters(application);
 
 connectDB();
 
-let port = process.env.PORT || 2728;
-// post=== undefined=> port= 2728
+let port = process.env.PORT || 3003;
+// post=== undefined=> port= 3003
 
 application.listen(port, () => {
     console.log("Backend Nodejs đang chạy trên port: http://localhost:" + port);
