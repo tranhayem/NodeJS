@@ -5,8 +5,8 @@ let henleUserLogin = (email, password) => {
     return new Promise(async (resolve, reject) => {
         try {
             let userData = {};
-            let isExist = await checkUserEmail(email);
-            if (isExist) {
+            let isEmail = await checkUserEmail(email);
+            if (isEmail) {
                 let user = await db.Users.findOne({
                     attributes: ['email', 'roleId', 'passWord'],
                     where: {
@@ -17,21 +17,21 @@ let henleUserLogin = (email, password) => {
                 if (user) {
                     let checkPassWord = await bcrypt.compareSync(password, user.passWord);
                     if (checkPassWord) {
-                        userData.errCode = 0;
-                        userData.errMessage = 'Đăng nhập thành công!';
+                        userData.errorCode = 0;
+                        userData.errorMessage = 'Đăng nhập thành công!';
                         delete user.passWord;
                         userData.user= user;
                     } else {
-                        userData.errCode = 3;
-                        userData.errMessage = 'Sai mật khẩu';
+                        userData.errorCode = 3;
+                        userData.errorMessage = 'Sai mật khẩu';
                     }
                 } else {
-                    userData.errCode = 2;
-                    userData.errMessage = 'Người dùng không tồn tại';
+                    userData.errorCode = 2;
+                    userData.errorMessage = 'Người dùng không tồn tại';
                 }
             } else {
-                userData.errCode = 1;
-                userData.errMessage = 'Email của bạn không tồn tại trong hệ thống, hãy thử lại với email khác!';
+                userData.errorCode = 1;
+                userData.errorMessage = 'Email của bạn không tồn tại trong hệ thống, hãy thử lại với email khác!';
             }
             resolve(userData)
         } catch (error) {

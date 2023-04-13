@@ -6,14 +6,14 @@ let handleLogin = async (request, respone) => {
 
     if (!email || !password) {
         return respone.status(500).json({
-            errCode: 1,
-            message: 'Missing inputs parameter!'
+            errorCode: 1,
+            message: 'Vui lòng nhập đầy đủ tài khoản, mật khẩu!'
         })
     }
     let userData = await userService.henleUserLogin(email, password)
     return respone.status(200).json({
-        errCode: userData.errCode,
-        errMessage: userData.errMessage,
+        errorCode: userData.errorCode,
+        errorMessage: userData.errorMessage,
         user: userData.user ? userData.user: {}
     })
 }
