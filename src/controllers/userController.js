@@ -19,7 +19,8 @@ let handleLogin = async (request, respone) => {
 }
 
 let handleGetAllUser = async (request, respone) => {
-    let id = request.body.id;
+    let id = request.query.id;
+
     if (!id) {
         return respone.status(200).json({
             errorCode: 1,

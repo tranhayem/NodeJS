@@ -63,14 +63,14 @@ let getAllUsers = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
             let users = '';
-            if (id == '') {
+            if (id== 0) {
                 users = await db.Users.findAll({
                     attributes: {
                         exclude: ['passWord']
                     }
                 })
             }
-            if (id && id !== '') {
+            if (id && id != 0) {
                 users = await db.Users.findOne({
                     where: {
                         id: id
