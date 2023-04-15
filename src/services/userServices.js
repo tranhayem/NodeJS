@@ -20,7 +20,7 @@ let henleUserLogin = (email, password) => {
                         userData.errorCode = 0;
                         userData.errorMessage = 'Đăng nhập thành công!';
                         delete user.passWord;
-                        userData.user= user;
+                        userData.user = user;
                     } else {
                         userData.errorCode = 3;
                         userData.errorMessage = 'Sai mật khẩu';
@@ -59,7 +59,35 @@ let checkUserEmail = (email) => {
     })
 }
 
+let getAllUsers = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let users = '';
+            if (id == '') {
+                users = await db.Users.findAll({
+                    attributes: {
+                        exclude: ['passWord']
+                    }
+                })
+            }
+            if (id && id !== '') {
+                users = await db.Users.findOne({
+                    where: {
+                        id: id
+                    },
+                    attributes: {
+                        exclude: ['passWord']
+                    }
+                })
+            }
+            resolve(users)
+        } catch (error) {
+            reject(error)
+        }
+    })
+}
+
 module.exports = {
     henleUserLogin: henleUserLogin,
-
+    getAllUsers: getAllUsers
 }

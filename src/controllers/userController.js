@@ -14,10 +14,28 @@ let handleLogin = async (request, respone) => {
     return respone.status(200).json({
         errorCode: userData.errorCode,
         errorMessage: userData.errorMessage,
-        user: userData.user ? userData.user: {}
+        user: userData.user ? userData.user : {}
+    })
+}
+
+let handleGetAllUser = async (request, respone) => {
+    let id = request.body.id;
+    if (!id) {
+        return respone.status(200).json({
+            errorCode: 1,
+            errorMessage: 'Thiếu tham số đầu vào',
+            users: []
+        })
+    }
+    let users = await userService.getAllUsers(id);
+    return respone.status(200).json({
+        errorCode: 0,
+        errorMessage: 'Đăng nhập thành công!',
+        users
     })
 }
 
 module.exports = {
-    handleLogin: handleLogin
+    handleLogin: handleLogin,
+    handleGetAllUser: handleGetAllUser
 }
