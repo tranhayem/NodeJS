@@ -1,6 +1,8 @@
 import db from "../models";
 import bcrypt from "bcryptjs";
 
+const salt= bcrypt.genSaltSync(10);
+
 let henleUserLogin = (email, password) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -63,7 +65,7 @@ let getAllUsers = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
             let users = '';
-            if (id== 0) {
+            if (id == 0) {
                 users = await db.Users.findAll({
                     attributes: {
                         exclude: ['passWord']
@@ -87,7 +89,127 @@ let getAllUsers = (id) => {
     })
 }
 
+let createNewUser = (data) => {
+    return new Promise(async (resolve, reject) => {
+        // resolve: giải quyết
+        // reject: từ chối
+        try {
+            // check email is exist
+            let isEmail = await checkUserEmail(data.email);
+            if (isEmail) {
+                resolve({
+                    errorCode: 1,
+                    message: 'Email đã tồn tại trong hệ thống, vui lòng nhập 1 email khác!'
+                })
+            }
+
+            let hashPasswordFromBcrypt = await hashUserPassword(data.password);
+            await db.Users.create({
+                email: data.email,
+                passWord: hashPasswordFromBcrypt,
+                firstName: data.firstName,
+                lastName: data.lastName,
+                address: data.address,
+                phoneNumber: data.phoneNumber,
+                gender: data.gender === '1' ? true : false,
+                roleId: data.roleId,
+            });
+            resolve({
+                errorCode: 0,
+                message: 'Thêm tài khoản thành công!'
+            });
+        } catch (error) {
+            reject(error);
+        }
+    });
+}
+
+let hashUserPassword = (password) => {
+    return new Promise(async (resolve, reject) => {
+        // resolve: giải quyết
+        // reject: từ chối
+        try {
+            let hashPassword = await bcrypt.hashSync(password, salt);
+            resolve(hashPassword);
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
+let editUser = (data) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if(!data.id) {
+                resolve({
+                    errorCode: 2,
+                    message: 'Thiếu tham số đầu vào'
+                });
+            }
+            let user = await db.Users.findOne({
+                where: { id: data.id },
+                raw: false
+            })
+
+            if (user) {
+                user.email = data.email;
+                user.passWord = data.passWord;
+                user.firstName = data.firstName;
+                user.lastName = data.lastName;
+                user.address = data.address;
+                user.phoneNumber = data.phoneNumber;
+                user.gender = data.gender;
+                user.roleId = data.roleId;
+
+                await user.save();
+
+                resolve({
+                    errorCode: 0,
+                    message: 'Chỉnh sửa dữ liệu thành công'
+                });
+            } else {
+                resolve({
+                    errorCode: 1,
+                    message: 'Tài khoản không tồn tại'
+                });
+            }
+        } catch (error) {
+            reject(error);
+        }
+    });
+};
+
+let deleteUser = (id) => {
+    return new Promise(async (resolve, reject) => {
+        let user = await db.Users.findOne({
+            where: {
+                id: id
+            }
+        })
+        if (!user) {
+            resolve({
+                errorCode: 2,
+                errorMessage: 'Tài khoản không tồn tại trong hệ thống'
+            })
+        }
+
+        await db.Users.destroy({
+            where: {
+                id: id
+            }
+        });
+
+        resolve({
+            errorCode: 0,
+            message: 'Xóa tài khoản thành công'
+        })
+    });
+}
+
 module.exports = {
     henleUserLogin: henleUserLogin,
-    getAllUsers: getAllUsers
+    getAllUsers: getAllUsers,
+    createNewUser: createNewUser,
+    editUser: editUser,
+    deleteUser: deleteUser
 }
