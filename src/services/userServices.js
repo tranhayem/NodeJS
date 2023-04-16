@@ -91,8 +91,6 @@ let getAllUsers = (id) => {
 
 let createNewUser = (data) => {
     return new Promise(async (resolve, reject) => {
-        // resolve: giải quyết
-        // reject: từ chối
         try {
             // check email is exist
             let isEmail = await checkUserEmail(data.email);

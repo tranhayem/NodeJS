@@ -1,54 +1,54 @@
 import userService from "../services/userServices"
 
-let handleLogin = async (request, respone) => {
+let handleLogin = async (request, response) => {
     let email = request.body.email;
     let password = request.body.password;
 
     if (!email || !password) {
-        return respone.status(500).json({
+        return response.status(500).json({
             errorCode: 1,
             message: 'Vui lòng nhập đầy đủ tài khoản, mật khẩu!'
         })
     }
     let userData = await userService.henleUserLogin(email, password)
-    return respone.status(200).json({
+    return response.status(200).json({
         errorCode: userData.errorCode,
         errorMessage: userData.errorMessage,
         user: userData.user ? userData.user : {}
     })
 }
 
-let handleGetAllUser = async (request, respone) => {
+let handleGetAllUser = async (request, response) => {
     let id = request.query.id;
 
     if (!id) {
-        return respone.status(200).json({
+        return response.status(200).json({
             errorCode: 1,
             errorMessage: 'Thiếu tham số đầu vào',
             users: []
         })
     }
     let users = await userService.getAllUsers(id);
-    return respone.status(200).json({
+    return response.status(200).json({
         errorCode: 0,
         errorMessage: 'Đăng nhập thành công!',
         users
     })
 }
 
-let handleCreateNewUser = async (request, respone) => {
-    let data = request.body;
+let handleCreateNewUser = async (request, response) => {
+    let data = request.body.data;
     let message = await userService.createNewUser(data);
-    return respone.status(200).json(message)
+    return response.status(200).json(message)
 }
 
-let handleUpdateUser = async (request, respone) => {
+let handleUpdateUser = async (request, response) => {
     let data = request.body;
     let message = await userService.updateUser(data);
-    return respone.status(200).json(message)
+    return response.status(200).json(message)
 }
 
-let handleDeleteUser = async (request, respone) => {
+let handleDeleteUser = async (request, response) => {
     if (!request.body.id) {
         return request.status(200).json({
             errorCode: 1,
@@ -56,7 +56,7 @@ let handleDeleteUser = async (request, respone) => {
         })
     }
     let message = await userService.deleteUser(request.body.id);
-    return respone.status(200).json(message)
+    return response.status(200).json(message)
 }
 
 module.exports = {
