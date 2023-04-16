@@ -43,7 +43,7 @@ let handleCreateNewUser = async (request, response) => {
 }
 
 let handleUpdateUser = async (request, response) => {
-    let data = request.body;
+    let data = request.body.data;
     let message = await userService.updateUser(data);
     return response.status(200).json(message)
 }
