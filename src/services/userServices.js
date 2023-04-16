@@ -99,25 +99,25 @@ let createNewUser = (data) => {
             if (isEmail) {
                 resolve({
                     errorCode: 1,
-                    message: 'Email đã tồn tại trong hệ thống, vui lòng nhập 1 email khác!'
+                    errorMessage: 'Email đã tồn tại trong hệ thống, vui lòng nhập 1 email khác!'
                 })
+            } else {
+                let hashPasswordFromBcrypt = await hashUserPassword(data.password);
+                await db.Users.create({
+                    email: data.email,
+                    passWord: hashPasswordFromBcrypt,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    address: data.address,
+                    phoneNumber: data.phoneNumber,
+                    gender: data.gender === '1' ? true : false,
+                    roleId: data.roleId,
+                });
+                resolve({
+                    errorCode: 0,
+                    message: 'Thêm tài khoản thành công!'
+                });
             }
-
-            let hashPasswordFromBcrypt = await hashUserPassword(data.password);
-            await db.Users.create({
-                email: data.email,
-                passWord: hashPasswordFromBcrypt,
-                firstName: data.firstName,
-                lastName: data.lastName,
-                address: data.address,
-                phoneNumber: data.phoneNumber,
-                gender: data.gender === '1' ? true : false,
-                roleId: data.roleId,
-            });
-            resolve({
-                errorCode: 0,
-                message: 'Thêm tài khoản thành công!'
-            });
         } catch (error) {
             reject(error);
         }
