@@ -36,26 +36,26 @@ let handleGetAllUser = async (request, respone) => {
     })
 }
 
-let handleCreateNewUser = async(request, respone)=> {
-    let data= request.body;
-    let message= await userService.createNewUser(data);
+let handleCreateNewUser = async (request, respone) => {
+    let data = request.body;
+    let message = await userService.createNewUser(data);
     return respone.status(200).json(message)
 }
 
-let handleEditUser = async(request, respone)=> {
-    let data= request.body;
-    let message= await userService.editUser(data);
+let handleUpdateUser = async (request, respone) => {
+    let data = request.body;
+    let message = await userService.updateUser(data);
     return respone.status(200).json(message)
 }
 
-let handleDeleteUser = async(request, respone)=> {
-    if(!request.body.id) {
+let handleDeleteUser = async (request, respone) => {
+    if (!request.body.id) {
         return request.status(200).json({
             errorCode: 1,
             errorMessage: 'Thiếu tham số đầu vào'
         })
     }
-    let message= await userService.deleteUser(request.body.id);
+    let message = await userService.deleteUser(request.body.id);
     return respone.status(200).json(message)
 }
 
@@ -63,6 +63,6 @@ module.exports = {
     handleLogin: handleLogin,
     handleGetAllUser: handleGetAllUser,
     handleCreateNewUser: handleCreateNewUser,
-    handleEditUser: handleEditUser,
+    handleUpdateUser: handleUpdateUser,
     handleDeleteUser: handleDeleteUser
 }

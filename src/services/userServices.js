@@ -1,7 +1,7 @@
 import db from "../models";
 import bcrypt from "bcryptjs";
 
-const salt= bcrypt.genSaltSync(10);
+const salt = bcrypt.genSaltSync(10);
 
 let henleUserLogin = (email, password) => {
     return new Promise(async (resolve, reject) => {
@@ -137,13 +137,13 @@ let hashUserPassword = (password) => {
     });
 };
 
-let editUser = (data) => {
+let updateUser = (data) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if(!data.id) {
+            if (!data.id) {
                 resolve({
                     errorCode: 2,
-                    message: 'Thiếu tham số đầu vào'
+                    message: 'Id người dùng không hợp lệ'
                 });
             }
             let user = await db.Users.findOne({
@@ -153,7 +153,7 @@ let editUser = (data) => {
 
             if (user) {
                 user.email = data.email;
-                user.passWord = data.passWord;
+                user.passWord = await hashUserPassword(data.password)
                 user.firstName = data.firstName;
                 user.lastName = data.lastName;
                 user.address = data.address;
@@ -210,6 +210,6 @@ module.exports = {
     henleUserLogin: henleUserLogin,
     getAllUsers: getAllUsers,
     createNewUser: createNewUser,
-    editUser: editUser,
+    updateUser: updateUser,
     deleteUser: deleteUser
 }
