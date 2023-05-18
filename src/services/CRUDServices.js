@@ -77,9 +77,10 @@ let updateUserData = (data) => {
                 where: { id: data.id }
             })
 
+            let hashPasswordFromBcrypt = await hashUserPassword(data.password);
             if (user) {
                 user.email = data.email;
-                user.passWord = data.passWord;
+                user.passWord = hashPasswordFromBcrypt;
                 user.firstName = data.firstName;
                 user.lastName = data.lastName;
                 user.address = data.address;
